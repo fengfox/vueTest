@@ -32,8 +32,39 @@
 				<el-tab-pane label="外卖">外卖</el-tab-pane>
 			</el-tabs>
 		</el-col>
-		<el-col>
-		    我是产品
+		<el-col :span='17' class="pos-order" id="order-list">
+		<div class="goods">
+			<div class="title"><a style="float:left;">常用商品</a></div>
+			
+			<div class="goodlist">
+				<ul>
+					<li>
+						<span>鸡腿汉堡</span>
+						<span>$12</span>
+					</li>
+					<li>
+						<span>鸡腿汉堡</span>
+						<span>$12</span>
+					</li>
+					<li>
+						<span>鸡腿汉堡</span>
+						<span>$12</span>
+					</li>
+					<li>
+						<span>鸡腿汉堡</span>
+						<span>$12</span>
+					</li>
+					<li>
+						<span>鸡腿汉堡</span>
+						<span>$12</span>
+					</li>
+					<li>
+						<span>鸡腿汉堡</span>
+						<span>$12</span>
+					</li>
+				</ul>
+			</div>
+		</div>
 		</el-col>
 	</el-row>
   </div>
@@ -85,5 +116,24 @@ export default {
 }
 .divbtn{
 	margin-top:10px;
+}
+.goods{
+	margin:20px;
+	float:left;
+}
+.title{
+	
+       height: 20px;
+       border-bottom:1px solid #D3DCE6;
+       background-color: #F9FAFC;
+       padding:10px;
+   }
+.goodlist ul li{
+	list-style: none;
+	padding:10px;
+	margin:5px;
+	border:1px solid #E5E9F2;
+	float:left;
+
 }
 </style>
