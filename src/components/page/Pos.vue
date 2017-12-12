@@ -50,7 +50,13 @@
 		
 		<el-tabs class="pos-tab" style="float:left;">
 			<el-tab-pane  label="汉堡">
-				汉堡
+				<ul class="cooklist">
+					<li v-for="goods in type0Goods">
+						<span><img :src="goods.goodsImg" width="100%"></span>
+						<span>{{goods.goodsName}}</span>
+						<span>{{goods.price}}元</span>
+					</li>
+				</ul>
 			</el-tab-pane>
 			<el-tab-pane  label="小食">
 				小食
@@ -138,6 +144,60 @@ export default {
               price:17
           }
           
+      ],
+    type0Goods:[
+          {
+              goodsId:1,
+              goodsImg:"http://7xjyw1.com1.z0.glb.clouddn.com/pos001.jpg",
+              goodsName:'香辣鸡腿堡',
+              price:18
+          }, {
+              goodsId:2,
+              goodsImg:"http://7xjyw1.com1.z0.glb.clouddn.com/pos002.jpg",
+              goodsName:'田园鸡腿堡',
+              price:15
+          }, {
+              goodsId:3,
+              goodsImg:"http://7xjyw1.com1.z0.glb.clouddn.com/pos004.jpg",
+              goodsName:'和风汉堡',
+              price:15
+          }, {
+              goodsId:4,
+               goodsImg:"http://7xjyw1.com1.z0.glb.clouddn.com/pos003.jpg",
+              goodsName:'快乐全家桶',
+              price:80
+          }, {
+              goodsId:5,
+               goodsImg:"http://7xjyw1.com1.z0.glb.clouddn.com/pos003.jpg",
+              goodsName:'脆皮炸鸡腿',
+              price:10
+          }, {
+              goodsId:6,
+               goodsImg:"http://7xjyw1.com1.z0.glb.clouddn.com/pos004.jpg",
+              goodsName:'魔法鸡块',
+              price:20
+          }, {
+              goodsId:7,
+               goodsImg:"http://7xjyw1.com1.z0.glb.clouddn.com/pos001.jpg",
+              goodsName:'可乐大杯',
+              price:10
+          }, {
+              goodsId:8,
+               goodsImg:"http://7xjyw1.com1.z0.glb.clouddn.com/pos003.jpg",
+              goodsName:'雪顶咖啡',
+              price:18
+          }, {
+              goodsId:9,
+               goodsImg:"http://7xjyw1.com1.z0.glb.clouddn.com/pos002.jpg",
+              goodsName:'大块鸡米花',
+              price:15
+          }, {
+              goodsId:20,
+               goodsImg:"http://7xjyw1.com1.z0.glb.clouddn.com/pos002.jpg",
+              goodsName:'香脆鸡柳',
+              price:17
+          }
+          
       ]
 	}
   },
@@ -153,9 +213,11 @@ export default {
 .pos-order{
 	background-color:#F9FAFC;
 	border-right:1solid #C0CCDA;
+	
 }
 .pos-tab{
 	margin:5%;
+
 }
 .divbtn{
 	margin-top:10px;
@@ -163,6 +225,8 @@ export default {
 .goods{
 	margin:20px;
 	float:left;
+	margin-left: 63px;
+	margin-right:63px;
 }
 .title{
 	
@@ -177,13 +241,27 @@ export default {
 	margin:5px;
 	border:1px solid #E5E9F2;
 	float:left;
-
-}
-li{
 	width:15%;
 }
+
 .moneyColor
 {
 	Color:blue;
 }
+.cooklist li
+{
+	list-style: none;
+	padding:10px;
+	margin:5px;
+	border:1px solid #E5E9F2;
+	float:left;
+	width:20%;
+	border:1px solid #E5E9F2;
+	
+}
+.pos-tab .el-tabs__content{
+	overflow:auto;
+	height:600px;
+}
+
 </style>
