@@ -38,34 +38,33 @@
 			
 			<div class="goodlist">
 				<ul>
-					<li>
-						<span>鸡腿汉堡</span>
-						<span>$12</span>
+					<li v-for="goods in oftenGoods"> 
+						<span>{{goods.goodsName}}</span>
+						<span class="moneyColor">${{goods.price}}</span>
 					</li>
-					<li>
-						<span>鸡腿汉堡</span>
-						<span>$12</span>
-					</li>
-					<li>
-						<span>鸡腿汉堡</span>
-						<span>$12</span>
-					</li>
-					<li>
-						<span>鸡腿汉堡</span>
-						<span>$12</span>
-					</li>
-					<li>
-						<span>鸡腿汉堡</span>
-						<span>$12</span>
-					</li>
-					<li>
-						<span>鸡腿汉堡</span>
-						<span>$12</span>
-					</li>
+					
 				</ul>
 			</div>
+			
 		</div>
+		
+		<el-tabs class="pos-tab" style="float:left;">
+			<el-tab-pane  label="汉堡">
+				汉堡
+			</el-tab-pane>
+			<el-tab-pane  label="小食">
+				小食
+			</el-tab-pane>
+			<el-tab-pane label="饮料">
+				饮料
+			</el-tab-pane>
+			<el-tab-pane label="套餐">
+				套餐
+			</el-tab-pane>
+		</el-tabs>
+			
 		</el-col>
+		
 	</el-row>
   </div>
 </template>
@@ -95,7 +94,51 @@ export default {
           goodsName: '甜筒',
           price: 8,
           count:1
-        }]
+        }],
+		oftenGoods:[
+          {
+              goodsId:1,
+              goodsName:'香辣鸡腿堡',
+              price:18
+          }, {
+              goodsId:2,
+              goodsName:'田园鸡腿堡',
+              price:15
+          }, {
+              goodsId:3,
+              goodsName:'和风汉堡',
+              price:15
+          }, {
+              goodsId:4,
+              goodsName:'快乐全家桶',
+              price:80
+          }, {
+              goodsId:5,
+              goodsName:'脆皮炸鸡腿',
+              price:10
+          }, {
+              goodsId:6,
+              goodsName:'魔法鸡块',
+              price:20
+          }, {
+              goodsId:7,
+              goodsName:'可乐大杯',
+              price:10
+          }, {
+              goodsId:8,
+              goodsName:'雪顶咖啡',
+              price:18
+          }, {
+              goodsId:9,
+              goodsName:'大块鸡米花',
+              price:15
+          }, {
+              goodsId:20,
+              goodsName:'香脆鸡柳',
+              price:17
+          }
+          
+      ]
 	}
   },
   mounted:function()
@@ -135,5 +178,12 @@ export default {
 	border:1px solid #E5E9F2;
 	float:left;
 
+}
+li{
+	width:15%;
+}
+.moneyColor
+{
+	Color:blue;
 }
 </style>
