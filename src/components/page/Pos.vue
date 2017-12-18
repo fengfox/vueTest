@@ -16,14 +16,18 @@
 						</el-table-column>
 						<el-table-column  label="操作" fixed="right">
 							<template scope="scope">
-								<el-button type="text" size="small">删除</el-button>
-								<el-button type="text" size="small">增加</el-button>
+								<el-button type="text" size="small" @click="deleteSingleGoods(scope.row)" >删除</el-button>
+								<el-button type="text" size="small" @click="addOrderList(scope.row)">增加</el-button>
 							</template>
 						</el-table-column>
 					</el-table>
+					<div class="divtotal">
+						<a>总数{{totalCount}}</a>
+						<a>总价{{totalMoney}}</a>
+					</div>
 					<div class="divbtn">
 						<el-button type="warning">挂单</el-button>
-						<el-button type="danger">删除</el-button>
+						<el-button type="danger" @click="deleteOrderList()">删除</el-button>
 						<el-button type="success">结账</el-button>
 					</div>
 				
@@ -38,7 +42,7 @@
 			
 			<div class="goodlist">
 				<ul>
-					<li v-for="goods in oftenGoods"> 
+					<li v-for="goods in oftenGoods"  @click="addOrderList(goods)"	> 
 						<span>{{goods.goodsName}}</span>
 						<span class="moneyColor">${{goods.price}}</span>
 					</li>
@@ -51,7 +55,7 @@
 		<el-tabs class="pos-tab" style="float:left;">
 			<el-tab-pane  label="汉堡">
 				<ul class="cooklist">
-					<li v-for="goods in type0Goods">
+					<li v-for="goods in type0Goods" @click="addOrderList(goods)">
 						<span><img :src="goods.goodsImg" width="100%"></span>
 						<span>{{goods.goodsName}}</span>
 						<span>{{goods.price}}元</span>
@@ -60,7 +64,7 @@
 			</el-tab-pane>
 			<el-tab-pane  label="小食">
 				<ul class="cooklist">
-					<li v-for="goods in type1Goods">
+					<li v-for="goods in type1Goods"  @click="addOrderList(goods)">
 						<span><img :src="goods.goodsImg" width="100%"></span>
 						<span>{{goods.goodsName}}</span>
 						<span>{{goods.price}}元</span>
@@ -69,7 +73,7 @@
 			</el-tab-pane>
 			<el-tab-pane label="饮料">
 				<ul class="cooklist">
-					<li v-for="goods in type2Goods">
+					<li v-for="goods in type2Goods"  @click="addOrderList(goods)">
 						<span><img :src="goods.goodsImg" width="100%"></span>
 						<span>{{goods.goodsName}}</span>
 						<span>{{goods.price}}元</span>
@@ -78,7 +82,7 @@
 			</el-tab-pane>
 			<el-tab-pane label="套餐">
 				<ul class="cooklist">
-					<li v-for="goods in type3Goods">
+					<li v-for="goods in type3Goods"  @click="addOrderList(goods)">
 						<span><img :src="goods.goodsImg" width="100%"></span>
 						<span>{{goods.goodsName}}</span>
 						<span>{{goods.price}}元</span>
@@ -99,29 +103,8 @@ export default {
   name: 'pos',
   data(){
 	return{
-		tableData:[{
-          
-          goodsName: '可口可乐',
-          price: 8,
-          count:1
-        }, {
-          
-          goodsName: '香辣鸡腿堡',
-          price: 15,
-          count:1
-        }, {
-         
-          goodsName: '爱心薯条',
-          price: 8,
-          count:1
-        }, {
-         
-          goodsName: '甜筒',
-          price: 8,
-          count:1
-        }],
-		oftenGoods:[ 
-      ],
+		tableData:[],
+		oftenGoods:[],
     type0Goods:[
           {
               goodsId:1,
@@ -130,7 +113,9 @@ export default {
               price:18
           }
           
-      ]
+      ],
+	totalCount:0,
+	totalMoney:0,
 	}
   },
   mounted:function()
@@ -158,15 +143,92 @@ export default {
          this.type1Goods=response.data[1];
          this.type2Goods=response.data[2];
          this.type3Goods=response.data[3];
-
+		 
       })
       .catch(error=>{
           console.log(error);
           alert('网络错误，不能访问');
       })
+  },
+  methods:
+  {
+	//添加订单列表的方法
+      addOrderList(goods){
+      this.totalCount=0; //汇总数量清0
+      this.totalMoney=0;
+            let isHave=false;
+            //判断是否这个商品已经存在于订单列表
+            for (let i=0; i<this.tableData.length;i++){
+                console.log(this.tableData[i].goodsId);
+                if(this.tableData[i].goodsId==goods.goodsId){
+                    isHave=true; //存在
+                }
+            }
+            //根据isHave的值判断订单列表中是否已经有此商品
+            if(isHave){
+                //存在就进行数量添加
+                 let arr = this.tableData.filter(o =>o.goodsId == goods.goodsId);
+                 arr[0].count++;
+                 //console.log(arr);
+            }else{
+                //不存在就推入数组
+                let newGoods={goodsId:goods.goodsId,goodsName:goods.goodsName,price:goods.price,count:1};
+                 this.tableData.push(newGoods);
+ 
+            }
+ 
+            //进行数量和价格的汇总计算
+            this.tableData.forEach((element) => {
+                this.totalCount+=element.count;
+                this.totalMoney=this.totalMoney+(element.price*element.count);   
+            });
+           
+      },
+	  deleteOrderList()
+	  {
+		this.totalCount=0;
+		this.totalMoney=0;
+		this.tableData=[];
+	  },
+	  deleteSingleGoods(goods)
+	  {
+		//如果count=1,则直接删除
+		this.tableData=this.tableData.filter(o=>o.goodsId!=goods.goodsId);
+		//如果count>1,则删除1个
+	  }
+
   }
   
 }
+/*
+methods:{
+	addOrderList(goods)
+	{
+	//商品是否已存在在订单列表中
+		let isHave=false;
+		for(let i=0;i<this.tableData.length;i++)
+		{
+			if(this.tableData[i].goodsId=goods.goodsId)
+			{
+				isHave=true;
+			}
+		}
+	//根据判断的值编写业务逻辑
+		if(isHave)
+		{
+			let array=this.tableData.filter(o=>o.goodsId.goodsId);
+			arr[0].count++;
+			
+		}
+		else
+		{
+			let newGoods={goodsId:goods.goodsId,goodsName:goods.goodsName,price:goods.price,count:1};
+            this.tableData.push(newGoods);
+		}
+	}
+
+}
+*/
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -202,7 +264,8 @@ export default {
 	margin:5px;
 	border:1px solid #E5E9F2;
 	float:left;
-	width:15%;
+	width:18%;
+	cursor:pointer;
 }
 
 .moneyColor
@@ -218,11 +281,16 @@ export default {
 	float:left;
 	width:20%;
 	border:1px solid #E5E9F2;
+	cursor:pointer;
 	
 }
 .pos-tab .el-tabs__content{
 	overflow:auto;
 	height:600px;
 }
-
+.divtotal a
+{
+	margin:20px;
+	padding:20px;
+}
 </style>
