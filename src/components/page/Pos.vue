@@ -11,12 +11,14 @@
 						<el-table-column prop="count" label="数量">
 							
 						</el-table-column>
+						
 						<el-table-column prop="price" label="金额">
 							
 						</el-table-column>
 						<el-table-column  label="操作" fixed="right">
 							<template scope="scope">
 								<el-button type="text" size="small" @click="deleteSingleGoods(scope.row)" >删除</el-button>
+								
 								<el-button type="text" size="small" @click="addOrderList(scope.row)">增加</el-button>
 							</template>
 						</el-table-column>
@@ -152,10 +154,22 @@ export default {
   },
   methods:
   {
+  
+  	  getTotal()
+	  {
+		this.totalCount=0;
+		this.totalMoney=0;
+		
+		if (this.tableData) {
+                this.tableData.forEach((element) => {
+                    this.totalCount += element.count;
+                    this.totalMoney = this.totalMoney + (element.price * element.count);
+                });
+            }
+	  },
 	//添加订单列表的方法
       addOrderList(goods){
-      this.totalCount=0; //汇总数量清0
-      this.totalMoney=0;
+      
             let isHave=false;
             //判断是否这个商品已经存在于订单列表
             for (let i=0; i<this.tableData.length;i++){
@@ -165,12 +179,15 @@ export default {
                 }
             }
             //根据isHave的值判断订单列表中是否已经有此商品
-            if(isHave){
+            if(isHave)
+			{
                 //存在就进行数量添加
                  let arr = this.tableData.filter(o =>o.goodsId == goods.goodsId);
                  arr[0].count++;
                  //console.log(arr);
-            }else{
+            }
+			else
+			{
                 //不存在就推入数组
                 let newGoods={goodsId:goods.goodsId,goodsName:goods.goodsName,price:goods.price,count:1};
                  this.tableData.push(newGoods);
@@ -178,10 +195,8 @@ export default {
             }
  
             //进行数量和价格的汇总计算
-            this.tableData.forEach((element) => {
-                this.totalCount+=element.count;
-                this.totalMoney=this.totalMoney+(element.price*element.count);   
-            });
+            this.getTotal();
+			
            
       },
 	  deleteOrderList()
@@ -193,9 +208,22 @@ export default {
 	  deleteSingleGoods(goods)
 	  {
 		//如果count=1,则直接删除
-		this.tableData=this.tableData.filter(o=>o.goodsId!=goods.goodsId);
+		if(goods.count==1)
+		{
+			this.tableData=this.tableData.filter(o=>o.goodsId!=goods.goodsId);
+			
+		}
 		//如果count>1,则删除1个
-	  }
+		else
+		{
+			let arr=this.tableData.filter(o=>o.goodsId==goods.goodsId);
+			arr[0].count--;
+		}
+		
+		//计算总价和总量
+		this.getTotal();
+	  },
+
 
   }
   
